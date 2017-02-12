@@ -7,26 +7,20 @@ const jsonParser = bodyParser.json();
 
 const {Recipes} = require('./models');
 
-// we're going to add some recipes to Recipes
-// so there's some data to look at
+
 Recipes.create(
   'boiled white rice', ['1 cup white rice', '2 cups water', 'pinch of salt']);
 Recipes.create(
   'milkshake', ['2 tbsp cocoa', '2 cups vanilla ice cream', '1 cup milk']);
 
-// send back JSON representation of all recipes
-// on GET requests to root
+
 router.get('/', (req, res) => {
   res.json(Recipes.get());
 });
 
 
-// when new recipe added, ensure has required fields. if not,
-// log error and return 400 status code with hepful message.
-// if okay, add new item, and return it with a status 201.
 router.post('/', jsonParser, (req, res) => {
-  // ensure `name` and `budget` are in request body
-  const requiredFields = ['name', 'ingredients'];
+   const requiredFields = ['name', 'ingredients'];
   for (let i=0; i<requiredFields.length; i++) {
     const field = requiredFields[i];
     if (!(field in req.body)) {
@@ -39,7 +33,6 @@ router.post('/', jsonParser, (req, res) => {
   res.status(201).json(item);
 });
 
-// Delete recipes (by id)!
 router.delete('/:id', (req, res) => {
   Recipes.delete(req.params.id);
   console.log(`Deleted shopping list item \`${req.params.ID}\``);
